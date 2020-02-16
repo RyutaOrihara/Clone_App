@@ -11,17 +11,19 @@
   </head>
 
   <body>
+    <div class="wrapper">
       <header class="header">
           <ul>
-            <li><a href="#">top</a></li>
+            <li><%= link_to "top",root_path %></li>
             <li><a href="#">SignUp</a></li>
             <li><a href="#">login</a></li>
           </ul>
-        </header>  
+        </header>
     <%= yield %>
     <footer>
       <p>作成者 折原 龍太</p>
       <p>作成日 20200215</p>
     </footer>
+    </div>
   </body>
 </html>

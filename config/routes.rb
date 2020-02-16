@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   # member doを使うと、idを必要とする固有のルーティングを生成
   # resources :モデル名sとすると、show,edit,update,destroyなどでidが必要なパスを生成
   # resource :モデル名とすると、どのパスにもidが必要ないルーティングを生成
+  root 'tops#index'
   resources :words do
     # do はブロックなのでendを忘れずに
     collection do
