@@ -1,30 +1,70 @@
-<h1>ツイート一覧</h1>
+<!-- 参考Bootstrap Custom content -->
+<div class="container">
+<h2>ツイート 一覧</h2>
+
 <div class="new-word">
   <%= link_to "新しくツイートする",new_word_path,class: 'btn btn-primary' %>
 </div>
+<div class="row">
+
+
+  <div class="col-sm-6 col-md-4">
+    <div class="thumbnail">
+      <img src="..." alt="...">
+      <div class="caption">
+        <% @words.each do |word| %>
+        <h3><%= word.content %></h3>
+        <p>...</p>
+        <!-- <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p> -->
+        <p><%= link_to "詳細を確認する", word_path(word.id),class: "btn btn-default", role: "button" %><%= link_to "ツイートを編集する", edit_word_path(word.id),class: "btn btn-default", role: "button" %><%= link_to "削除する", word_path(word.id),class: "btn btn-default", role: "button",method: :delete, data: {confirm: '本当に削除してもいいですか？'} %></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<%# サムネイルごとにツイートタイトルを出したい %>
+<%# 一つのサムネイルのなかにどんどん入れ子になってしまう。 %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- コントローラで設定したフィードバックメッセージを表示する>-->
 <p><%= notice  %></p>
 <!-- <tr>タグは、テーブルにおけるレコード、つまり行を構成するパーツです。
 この<tr>タグもeach文によって、「レコード数文挿入する」という意味になります。 -->
-<table>
-  <tr>
-    <th>ツイート一覧</th>
-  </tr>
+<!-- <table> -->
+  <!-- <tr> -->
+    <!-- <th>ツイート一覧</th> -->
+  <!-- </tr> -->
 <!-- @worksの配列の中身を展開するためeachメソッドを使う -->
-<% @words.each do |word| %>
-  <tr>
-    <td><%= word.content %></td>
+<%# <% @words.each do |word| %>
+  <!-- <tr> -->
+    <!-- <td><%# word.content %></td> -->
     <!-- HTMLの<a>タグを作成するビューヘルパーlink_toメソッド-->
     <!-- link_to(何と出力させるか, パス) -->
-    <td><%= link_to '詳細を確認する', word_path(word.id) %></td>
+    <!-- <td><%# link_to '詳細を確認する', word_path(word.id) %></td> -->
     <!-- 編集画面を表示するにはedit_blog_path(1),(2),(3)とか表示する -->
     <!-- いちいち数字で表すのは面倒なので、idを使う -->
-    <td><%= link_to 'ツイートを編集する', edit_word_path(word.id) %></td>
+    <!-- <td><%# link_to 'ツイートを編集する', edit_word_path(word.id) %></td> -->
     <!-- destroyの場合、リンク先を指定するプレフィックスがないHTTPメソッドがデフォでGETだから -->
     <!-- HTTPメソッドがDELETEのためオプションで指定する method: :DELETE -->
     <!-- さらに誤まって削除ボタンを押した時に表示する確認ダイアログを設定する data: {confirm: '本当に削除してもいいですか？'} -->
 
-    <td><%= link_to 'ツイートを削除する', word_path(word.id), method: :delete, data: {confirm: '本当に削除してもいいですか？'}  %></td>
-  </tr>
-<% end %>
-</table>
+    <!-- <td><%# link_to 'ツイートを削除する', word_path(word.id), method: :delete, data: {confirm: '本当に削除してもいいですか？'}  %></td> -->
+  <!-- </tr> -->
+<%# <% end %> %>
+<!-- </table> -->
+
+</div>
