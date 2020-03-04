@@ -4,6 +4,7 @@ class WordsController < ApplicationController
   # onlyオプションを使用することで、指定されたアクションが実行された場合(ここでは、show,edit,update,destroy)のみbefore_actionが実行される
 ### #が3つついてる処理部分は重複しているためコメントアウトしている
   before_action :set_word, only: [:show,:edit,:update,:destroy]
+  before_action :require_login, only: [:index,:new,:show,:edit,:update,:destroy]
   # 一覧
   def index
     @words = Word.all
@@ -20,7 +21,10 @@ class WordsController < ApplicationController
     # に変更を加える。
     # バリデーションが許されたのか、許されないのかによってレコードが保存されるか決まる
     # そのため保存ができる場合とできない場合の条件分岐を追記する必要がある
-    @word = Word.new(word_params)
+    # @word = Word.new(word_params)
+    # wordカラムに外部キーを与えているので、user_idに値を入れてあげる必要がある。
+    # @word.user_id = current_user.id # 現在ログインしているuserのidを、blogのuser_idカラムに挿入する
+    @word = current_user.words.build(word_params)
     # 戻るボタンが実行されたかはparams[:back]で確認
     # 戻るボタンが押されている場合は値を保持しつつ、新規投稿に戻る
     # 一度戻るボタンを押すと再度確認画面に進まないで登録できてしまう
@@ -30,6 +34,7 @@ class WordsController < ApplicationController
       render :new
     else
       if @word.save
+        WordMailer.word_mail(@word).deliver
         # redirectは指定したURLにアクセスする際、一からデータ全てを取得し直す
         # noticeはリダイレクト先にメッセージを表示する
         redirect_to words_path, notice: "ツイートを投稿しました！"
@@ -99,7 +104,8 @@ class WordsController < ApplicationController
     # form_withのデフォルト設定
     # 引数がレコードに存在しない場合、createアクションへ送信します。
     # 引数がレコードに存在している場合、updateアクションへ送信します。
-    @word = Word.new(word_params)
+    # @word = Word.new(word_params)
+    @word = current_user.words.build(word_params)
     # 新規投稿時に空欄でも確認画面へ行けてしまう
     # バリデーションの性質はDBにレコードが保存される前に動作するからである
     # 手導でバリデーション発生させるためにはvalid,invalidメソッドを使う
@@ -108,9 +114,20 @@ class WordsController < ApplicationController
     # .invalid?はバリデーションを実行し、boolean型の戻り値を受け取ります。
     # バリデーションが失敗 => true
     # バリデーションが成功 => false
+
     render :new if @word.invalid?
   end
 
+  # 今ログインしているユーザーが、その投稿をお気に入り登録しているか
+  # どうか」を判断するための処理
+    def show
+      @favorite = current_user.favorites.find_by(word_id: @word.id)
+    end
+    # urrent_user.favorites = 現在ログインしているユーザのfavorites
+    # テーブルのレコード（user_id,word_id）を抽出
+    # find_by(word_id: @word.id) = この投稿のidが存在しているか確認
+    # お気に入りにされてなければ＠favoriteにnilを代入する。
+    # find_byメソッドは、条件に一致するものがない場合には、nilを返します
 
 
   private
@@ -127,5 +144,13 @@ class WordsController < ApplicationController
   # このメソッドをアクションが行われる前に実行するため先頭にbefore_actionメソッドを記述する
   def set_word
     @word = Word.find(params[:id])
+  end
+
+  # ログイン中のユーザ以外がアクセスしてきた時にログイン画面に遷移させる
+  def require_login
+    unless logged_in?
+      flash[:error] = "ログインが必要です"
+      redirect_to new_session_path
+    end
   end
 end

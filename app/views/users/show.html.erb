@@ -1,0 +1,22 @@
+<h1><%= @user.name %>のページ</h1>
+<p>メールアドレス:<%= @user.email %></p>
+
+<h2>お気に入り一覧</h2>
+<% @favorites_words.each do |favorite|  %>
+<div class="col-xs-12 col-sm-6 col-md-4">
+  <div class="thumbnail">
+    <img src="..." alt="...">
+    <div class="caption">
+      <h3><%= favorite.content %></h3>
+      <%= favorite.user.name  %>
+      <p>
+        <%= link_to "詳細を確認する", word_path(favorite.id),class: "btn btn-default", role: "button" %>
+        <% if favorite.user_id  == @user.id %>
+          <%= link_to "ツイートを編集する", edit_word_path(word.id),class: "btn btn-default", role: "button" %>
+          <%= link_to "削除する", word_path(word.id),class: "btn btn-default", role: "button",method: :delete, data: {confirm: '本当に削除してもいいですか？'} %>
+        <% end %>
+      </p>
+    </div>
+  </div>
+</div>
+<% end %>

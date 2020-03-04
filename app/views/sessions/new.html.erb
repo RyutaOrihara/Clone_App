@@ -1,0 +1,17 @@
+<h1>Log in</h1>
+<%# sessionにはモデルがないため、form_withに送るためのモデル名がインスタンス変数で伝えられない。。 %>
+<%# したがって、新しいセッションフォームを作成するときには、form_withヘルパーに追加の情報を独自に渡さなければいけない。 %>
+<%# モデルがない場合のリソースの名前とそれに対するURLを指定する %>
+<%# form_with(scope::リソースの名前,url: 対応するURL) %>
+<%= form_with(scope: :session,url:sessions_path,local:true) do |f| %>
+<%# スコープはsession,urlはcreateのプレフィックス %>
+  <%= f.label :email %>
+  <%= f.email_field :email %>
+  <%= f.label :password %>
+  <%= f.password_field :password %>
+  <%= f.submit"Log in" %>
+<% end %>
+<%# ちょっとボケてた。おさらい。 %>
+<%# SignUpでユーザ登録した後に登録したemailアドレスと設定したパスワードでマイページにログインする流れ %>
+<%# cookiesはページが遷移した場合も破棄されないので、ユーザIDなどの情報を保存できる。 %>
+<%# セッションにはSessionモデルというものがなく、そのため@userのようなインスタンス変数に相当するものもない %>

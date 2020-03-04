@@ -13,12 +13,29 @@
   <body>
     <div class="wrapper">
       <header class="header">
+      <% if logged_in? %>
+        <%# ログインしている場合 %>
           <ul>
             <li><%= link_to "top",root_path %></li>
-            <li><a href="#">SignUp</a></li>
-            <li><a href="#">login</a></li>
+            <li><%= link_to "マイページ",user_path(current_user.id)  %></li>
+            <li><%= link_to "新規投稿",new_word_path %></li>
+            <li><%= link_to "投稿一覧", words_path %></li>
+            <li><%= link_to "ログアウト",session_path(current_user.id) ,method: :delete, data: {confirm: 'ログアウトしますか？'} %></li>
           </ul>
-        </header>
+
+      <% else %>
+        <%# ログインしていない場合 %>
+          <ul>
+            <li><%= link_to "top",root_path %></li>
+            <li><%= link_to "SignUp",new_user_path %></li>
+            <li><%= link_to "Log in",new_session_path %></li>
+          </ul>
+
+      <% end %>
+      </header>
+      <% flash.each do |key,value| %>
+        <%= content_tag(:div,value,class:"{key}") %>
+      <% end %>
     <%= yield %>
     <footer>
       <p>作成者 折原 龍太</p>

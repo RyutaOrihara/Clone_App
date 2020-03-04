@@ -5,30 +5,29 @@
 .wrapper{
   padding-bottom: 120px;
   box-sizing: border-box;
-  background-image: url("/assets/tubakuro.jpg");
+  background-image: url("/assets/tubakuro_bokashi.jpg");
   background-size: cover;
   background-attachment: fixed;
   background-position: center center;
   background-repeat: no-repeat;
   width: 100vw;
-  height: 100%;
-  z-index: 0;/*重なり順序を一番上にしておく*/
-  overflow: hidden;/*ブラー効果でボヤけた部分を非表示*/
+  min-height: 80vw;
+  position: relative;
 }
 
-/*:beforeにぼかし効果を設定する*/
-.wrapper::before {
-  content: '';
-  background: inherit;/*.bgImageで設定した背景画像を継承する*/
-  filter: blur(5px);
-  position: absolute;
-   /*ブラー効果で画像の端がボヤけた分だけ位置を調整*/
-  top: -5px;
-  left: -5px;
-  right: -5px;
-  bottom: -5px;
-  z-index: -1;/*重なり順序を一番下にしておく*/
-}
+// /*:beforeにぼかし効果を設定する*/
+// .wrapper::before {
+//   content: '';
+//   background: inherit;/*.bgImageで設定した背景画像を継承する*/
+//   filter: blur(5px);
+//   position: absolute;
+//    /*ブラー効果で画像の端がボヤけた分だけ位置を調整*/
+//   top: -5px;
+//   left: -5px;
+//   right: -5px;
+//   bottom: -5px;
+//   z-index: -1;/*重なり順序を一番下にしておく*/
+// }
 
 header {
   width: 100%;
@@ -67,8 +66,11 @@ footer {
 html {
   position: relative;
   min-height: 100%;
+  height: 100%;
 }
 
 body {
   text-align: center;
+  height: 100%;
+  margin: 0;
 }

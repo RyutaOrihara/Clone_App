@@ -9,10 +9,42 @@
         <h3><%= @word.content %></h3>
         <p>...</p>
         <div class="btn-group">
-          <p><%= link_to "ツイートを編集する", edit_word_path(@word.id),class: "btn btn-default w-25", role: "button" %><%= link_to "削除する", word_path(@word.id),class: "btn btn-default w-25", role: "button",method: :delete, data: {confirm: '本当に削除してもいいですか？'} %></p>
+          <p>
+            <%# お気に入りボタン表示 %>
+          <% unless @word.user_id  == current_user.id %>
+            <% if @favorite.present? %>
+              <%= link_to 'お気に入りを解除する', favorite_path(id: @favorite.id), method: :delete,class: 'btn btn-danger' %>
+            <% else %>
+              <%= link_to 'お気に入り登録する', favorites_path(word_id: @word.id),method: :post,class: 'btn btn-primary' %>
+            <% end %>
+          <% end %>
+          <%# 編集、削除ボタン表示 %>
+          <%= link_to '戻る', :back,class: "btn btn-default w-25" %>
+          <% if @word.user_id  == current_user.id %>
+            <%= link_to "ツイートを編集する", edit_word_path(@word.id),
+            class: "btn btn-default w-25", role: "button" %>
+            <%= link_to "削除する", word_path(@word.id),class: "btn btn-default w-25",
+            role: "button",method: :delete, data: {confirm: '本当に削除してもいいですか？'} %>
+
+         <% end %>
+
+
+          </p>
+
         </div>
       </div>
     </div>
   </div>
 </div>
 </div>
+<%# このビューでは、@favoriteがnilであれば（お気に入り登録されていなければ）「お気に入りする」ボタンを表示させます。そのボタンには、Favoriteコントローラのcreateアクションへのリンクをもうけています。
+逆に、@favoriteがnilでなければ（お気に入り登録されていれば）「お気に入りを解除する」ボタンを表示させます。解除ボタンは、Favoriteコントローラのdestroyアクションへリンクしています。　　
+　　
+
+
+この時、createアクションに送る「お気に入りする」のリンクでは、「どのブログをお気に入りするのか？」という情報を送るために、(blog_id: @blog.id)の記述を追記しています。
+（@blog.idの値を、blog_idパラメータとして送信し、その値を用いてFavoriteのデータをcreateしています）　　
+　　
+
+
+また、destroyアクションに送る「お気に入りを解除する」のリンクでは、「どのfavoreiteを削除するのか？」という情報を送るために、(id: @favorite.id)の記述を追記しています。 %>

@@ -36,9 +36,15 @@ gem 'jbuilder', '~> 2.5'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
+#has_secure_passwordメソッドでpassword.password_digestカラムに確認用パスワード入力ができるようにするため
+gem 'bcrypt','3.1.11'
+
+gem 'faker'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'dotenv-rails'
 end
 
 group :development do
@@ -58,6 +64,9 @@ group :development do
   gem 'binding_of_caller'
   # pryコンソールを立ち上げて処理が停止しても対話式にRubyコマンドを実行することができる。
   gem 'pry-rails'
+  # メール受信画面をブラウザで表示できるようになる
+  gem 'letter_opener_web'
+  gem 'faker'
 end
 
 group :test do
