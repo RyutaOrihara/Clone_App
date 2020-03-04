@@ -12,7 +12,7 @@ test:
   <<: *default
   database: yamabikodama_test
 
-¥production:
+production:
   <<: *default
   database: yamabikodama_production
   username: yamabikodama
