@@ -8,7 +8,7 @@ class Word < ApplicationRecord
   validates :content, presence: true
   validates :content, length: {in: 1..140}
   # contentという値を確認し、ブランクであった場合は違反状態の値とみなして保存を中止します
-  
+
   belongs_to :user
   has_many :favorites, dependent: :destroy
   # 任意のWordsインスタンスのidとFavoritesテーブルにあるword_idの数字が一致している
@@ -18,6 +18,10 @@ class Word < ApplicationRecord
   # through: :favoritesで「favoritesを通過して」
   # source: :userで「userの情報を取得する」という意味合いになります
   # word.favorite_usersで投稿をお気に入りに指定いるユーザ一覧を取得できる
+
+
+  # Wordモデルのimageカラムに、ImageUploaderを紐付けます。
+  mount_uploader :image, ImageUploader
 end
 
 # validateは、saveメソッド、createメソッド、updateメソッドなどデータを保存、更新する時に実行されます。

@@ -35,4 +35,6 @@ class User < ApplicationRecord
   # 任意のUserインスタンスのidとFavoritesテーブルのあるuser_idの数字が
   # 一致しているもの全てを取り出す。
   has_many :favorite_words, through: :favorites, source: :word
+  # Userモデルのimageカラムに、ImageUploaderを紐付けます。
+  mount_uploader :image, ImageUploader
 end

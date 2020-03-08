@@ -12,7 +12,11 @@ class WordsController < ApplicationController
 
   # 新規作成
   def new
-    @word = Word.new
+    if params[:back]
+      @word = Word.new(word_params)
+    else
+      @word = Word.new
+    end
   end
 
   # 新規作成を保存
@@ -38,6 +42,7 @@ class WordsController < ApplicationController
         # redirectは指定したURLにアクセスする際、一からデータ全てを取得し直す
         # noticeはリダイレクト先にメッセージを表示する
         redirect_to words_path, notice: "ツイートを投稿しました！"
+
       else
         # renderはredirectと違い画面をもう一度描画するという意味なのでデータの状態をそのままにする
         render :new
@@ -79,6 +84,7 @@ class WordsController < ApplicationController
     # 一覧ページに遷移する
     if @word.update(word_params)
       redirect_to words_path, notice:"ツイートを編集しました"
+
     else
     # バリデーションに失敗したらもう一度編集画面に戻る
       render :edit
@@ -123,7 +129,7 @@ class WordsController < ApplicationController
     def show
       @favorite = current_user.favorites.find_by(word_id: @word.id)
     end
-    # urrent_user.favorites = 現在ログインしているユーザのfavorites
+    # current_user.favorites = 現在ログインしているユーザのfavorites
     # テーブルのレコード（user_id,word_id）を抽出
     # find_by(word_id: @word.id) = この投稿のidが存在しているか確認
     # お気に入りにされてなければ＠favoriteにnilを代入する。
@@ -134,7 +140,7 @@ class WordsController < ApplicationController
   # Parameterを取得する際に「何を許可するか」を指定する
   # Parameterの中身をセキュリティ観点からの許可設定をStrongParameterという
   def word_params
-    params.require(:word).permit(:content)
+    params.require(:word).permit(:content,:image,:image_cache)
   end
   #クリックしたツイートのidをインスタンス変数に代入する処理は
   # show,edit,updateの重複している

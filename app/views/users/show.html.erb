@@ -1,14 +1,17 @@
 <h1><%= @user.name %>のページ</h1>
 <p>メールアドレス:<%= @user.email %></p>
+<p>Image:<%= image_tag @user.image.url %></p>
+<%= link_to '戻る', users_path %>
 
 <h2>お気に入り一覧</h2>
+
 <% @favorites_words.each do |favorite|  %>
 <div class="col-xs-12 col-sm-6 col-md-4">
   <div class="thumbnail">
     <img src="..." alt="...">
     <div class="caption">
       <h3><%= favorite.content %></h3>
-      <%= favorite.user.name  %>
+      <%= favorite.user.name %>
       <p>
         <%= link_to "詳細を確認する", word_path(favorite.id),class: "btn btn-default", role: "button" %>
         <% if favorite.user_id  == @user.id %>

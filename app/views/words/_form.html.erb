@@ -4,7 +4,7 @@
 <%# url: confirm_blogs_pathのurlオプションを与えることで、blogs#confirmを実行するように変更 %>
 <%# newアクションの時は確認画面を経由、editアクションの時は経由せずに更新できるようにしたい %>
 <%# newとeditのアクションを分岐させるため、ヘルパーメソッドを使いたい。form_withのurl指定をchoose_new_or_editメソッドと記述する %>
-<%= form_with(model: @word,local: true, url: choose_new_or_edit) do |f| %>
+<%= form_with(model: @word,local: true, url: choose_new_or_edit,multipart: true) do |f| %>
 <%# インスタンス変数.errosは@blogをバリデーションした際のエラー情報がまとめて入っています。@blogのsaveでバリデーションエラーが発生した際、Railsは@blogの中に発生したエラーの情報を詰め込んで返却します。エラーが起きた後のページで@word.errorsという処理を発生させれば、そこにエラー情報が発見できるというわけです。 %>
   <% if @word.errors.any? %>
   <%# if で条件分岐してあげることでエラーが存在するときだけ内部の記述を実行する %>
@@ -24,6 +24,13 @@
   <div class="word_content">
     <%= f.label :content %>
     <%= f.text_field :content %>
+  <div class="image_title">
+    <%= f.label :画像 %>
+    <%= image_tag(@word.image.url) if @word.image && @word.image.url %>
+    <%= f.file_field :image %> <!-- imageカラムに画像を送る処理を追記 -->
+    <%= f.hidden_field :image_cahce %> <!-- 確認画面にアップロードした画像を表示する-->
+  </div>
+
   </div>
   <%= f.submit %>
 <% end %>

@@ -3,14 +3,17 @@
 <!-- newとは違うViewファイルconfirm.html.erbを作る必要がある -->
 
 <h3>以下の内容で送信します</h3>
-<%= form_with(model: @word,local: true) do |form|  %>
+<%= form_with(model: @word,url: words_path,local: true,multipart: true) do |form|  %>
 <%# 送られてきた値は保持するが表示はしないform.hidden_fieldを使用する %>
 <%# new Viewからきた値をそのまま、confirmアクションに渡すようにしている %>
   <%= form.hidden_field :content %>
   <%# 確認用の値を表示させるために、インスタンス変数の中の値を出力するようにしている %>
   <%# そのためにはコントローラにconfirmメソッドを追加して@wordを定義する %>
   <p>ツイート内容<%= @word.content %></p>
+  <%= image_tag(@word.image.url) if @word.image && @word.image.url %>
+  <%= form.hidden_field :image_cahce %>
   <%= form.submit "登録する" %>
+<% end %>
   <%# form_with内に作った戻るボタンはcreateアクションを実行リクエストするため、HTTPメソッドがpostとして実行される %>
   <%# つまり、前回のアクションに値を保持して戻れるようになる %>
   <%# この段階では両ボタンともcreateアクションが実行されてしまう⇨一瞬悩んだが、link_toの引数backとの勘違いだった。今はformの話 %>
@@ -21,11 +24,16 @@
   <%# ログからもPrameterに"back"=>"戻る"が追加されてる %>
   <%# この時点では、controller側で振り分け処理をしていないため、登録される %>
   <%# コントローラーにてcreateアクション側で戻るボタンが実行されたかどうか、params[:back]を使って条件分岐を設定する %>
-  <%= form.submit "戻る", name: 'back' %>
-<% end %>
+
 <%# 戻るボタンを作成して前のアクションに戻れるようにする %>
 <%# 前のアクションに戻るにはプレフィックス指定ではなく引数backを記述 %>
 <%# HTTPメソッドがGETなのでControllerにパラメータを渡せず、戻ると初期化されてしまう %>
 <%# パラメータが初期化されないように戻るボタンを作成するには、form_withを使用する %>
 <%# urlオプションによりform_withで実行をリクエストするアクションを指定することができる。 %>
 <%# <%= link_to "戻る", :back  %>
+
+<%= form_with(model:@word, url:new_word_path, local:true,method:'get',multipart: true) do |form| %>
+  <%= form.hidden_field :content %>
+  <%= form.hidden_field :image_cahce %>
+  <%= form.submit "戻る", name: 'back' %>
+<% end %>

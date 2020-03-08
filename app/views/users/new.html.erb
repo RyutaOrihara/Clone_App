@@ -1,39 +1,5 @@
-<h1>ユーザー登録</h1>
-<%# エラー文を表示させるコード %>
-<% if @user.errors.any? %> <%# エラーメッセージを持っているなら %>
-<%# div id="error_explanation"を使用することでRailsがデフォルトで用意しているエラーようにCSSを適用できる %>
-  <div id="error_explanation">
-    <h2><%= pluralize(@user.errors.count,"error") %>prohibited this @user from being saved: </h2>
-    <ul>
-      <% @user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-        <% end %>
-    </ul>
-  </div>
-<% end %>
-<%# 通常はform_with内に記述します。（フォームの一部であるとするためです。） %>
+<h1>ユーザ登録</h1>
+<%# 画面を描画するrenderを使ってパーシャルファイル名formを呼び出す %>
+<%= render 'form'  %>
 
-
-
-<%# form_withを使うにはcreateアクションのルーティングが必要 %>
-<%= form_with(model: @user,local: true) do |f| %>
-<div class="user_content">
-  <%= f.label :name %>
-  <%= f.text_field :name%>
-</div>
-<div class="user_content">
-  <%= f.label :email %>
-  <%= f.text_field :email  %>
-</div>
-<div class="user_content">
-  <%= f.label :password %>
-  <%= f.text_field :password %>
-</div>
-<div class="user_content">
-  <%= f.label :password_confirmation %>
-  <%= f.text_field :password_confirmation %>
-</div>
-<div class="create_user_button">
-  <%= f.submit "Create my account" %>
-</div>
-<% end %>
+<%# newとeditは違うアクション内から呼び出されるものですが、同じ記述を_formにまとめ、その_formをnewとeditのhtmlがそれぞれrenderで呼び出すことで、記述を共通化しています %>

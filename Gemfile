@@ -38,7 +38,8 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 #has_secure_passwordメソッドでpassword.password_digestカラムに確認用パスワード入力ができるようにするため
 gem 'bcrypt','3.1.11'
-
+gem 'carrierwave'
+gem 'mini_magick'
 
 
 group :development, :test do
